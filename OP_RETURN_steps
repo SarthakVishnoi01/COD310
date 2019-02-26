@@ -15,3 +15,6 @@ bitcoin-cli walletpassphrase "chinmay1bitcoin" 10
 signedtx=$(bitcoin-cli -named signrawtransaction hexstring=$rawtxhex | jq -r '.hex')
 
 bitcoin-cli -named sendrawtransaction hexstring=$signedtx
+
+
+9f9b43c54121ea91aff5033ceff0fafcac2d77ff19e9869177e2ad240df7f6fd
