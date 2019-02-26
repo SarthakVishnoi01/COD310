@@ -1,6 +1,5 @@
 pragma solidity ^0.4.18;
 
-
 contract Certificate{
 
     address public issuer;
@@ -11,7 +10,6 @@ contract Certificate{
     string public Qualifiaction;
     string public Institute;
     uint public timestamp;
-
 
     modifier onlyIssuer() {
         require(msg.sender == issuer);
@@ -27,7 +25,6 @@ contract Certificate{
         timestamp = _timestamp;
     }
 
-
     function close() external onlyIssuer  { 
         selfdestruct(issuer);
     }
@@ -42,11 +39,12 @@ contract CertificateNotary {
         require(msg.sender == Owner);
         _;
     }
+    
     function CertificateNotary () public{
         Owner=msg.sender;
     }
 
-    function createMarriage( address _owner, string _first_name, string _last_name, string _Qualifiaction, string _Institute, uint _timestamp) public onlyOwner returns (bool) {
+    function createCert( address _owner, string _first_name, string _last_name, string _Qualifiaction, string _Institute, uint _timestamp) public onlyOwner returns (bool) {
 
         address new_certificate = new Certificate(msg.sender, _owner,  _first_name, _last_name, _Qualifiaction, _Institute, _timestamp);
         ContractCreated(new_certificate);
@@ -61,4 +59,6 @@ contract CertificateNotary {
         selfdestruct(Owner);  // `owner` is the owners address
     }
 }
+
+
 //  0x31b2c6b7c6a60ebac7f19d9195f62381f20e9062, "chinmay" , "Rai" , "Btech", "IITD",  1551070321

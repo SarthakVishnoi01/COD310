@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/1-col-portfolio.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+     <script src="js/web3.min.js"></script>
+  
+    <style>
+	    span:before{
+	          content:" "; 
+	          display:inline-block; 
+	          width:50px;
+	      	}
+	</style>
+
+  	<title>Certificate</title>
+
+</head>
+
+<body>
+   <div class="container">
+
+		  <div class="panel panel-primary">
+
+		    <div class="panel-heading"> <h3 style="text-align:center">Details of Certificate </h3></div>
+
+		    <div class="panel-body" >
+
+		    	<table class="table">
+		    		<tr>
+		    			<td>Account Address of Recipient</td>
+		    			<td><div id="Recipient_add"></div></td>
+		    		</tr>
+		    		<tr>
+		    			<td>Account Address of Issuer</td>
+		    			<td><div id="Issuer_add"></div></td>
+		    		</tr>
+		    		<tr>
+		    			<td>First Name</td>
+		    			<td><div id="lst_name"></div></td>
+		    		</tr>
+		    		<tr>
+		    			<td>Last Name</td>
+		    			<td><div id="fst_name"></div></td>
+		    		</tr>
+		    		<tr>
+		    			<td>Qualification</td>
+		    			<td><div id="qual"></div></td>
+		    		</tr>	
+		    		<tr>
+		    			<td>Institute</td>
+		    			<td><div id="Inst"></div></td>
+		    		</tr>
+		    		<tr>
+		    			<td>Time of Issue</td>
+		    			<td><div id="time"></div></td>
+
+		    		</tr>
+
+
+		    	</table>
+
+		    </div>
+		    
+		  </div> 
+   </div>		   
+
+	<script type="text/javascript">
+
+	    var add = decodeURIComponent(window.location.search).substring(1)
+
+	    if (typeof web3 !== 'undefined') { web3 = new Web3(web3.currentProvider);}
+	    else {  web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')); }
+		try {web3.eth.accounts;}
+	    catch(err) {alert("You not connected to ethereum");}
+
+	     var abi1 = [{"constant":true,"inputs":[],"name":"issuer","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"close","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"Qualifiaction","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"timestamp","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"first_name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"last_name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"Institute","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_issuer","type":"address"},{"name":"_owner","type":"address"},{"name":"_first_name","type":"string"},{"name":"_last_name","type":"string"},{"name":"_Qualifiaction","type":"string"},{"name":"_Institute","type":"string"},{"name":"_timestamp","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}];
+
+	     var contract = web3.eth.contract(abi1).at(add);
+	     var t = contract.timestamp();
+
+	     document.getElementById("Recipient_add").innerHTML = contract.owner();
+	     document.getElementById("Issuer_add").innerHTML = contract.issuer();
+	     document.getElementById("lst_name").innerHTML = contract.first_name();
+	     document.getElementById("fst_name").innerHTML = contract.last_name();
+	     document.getElementById("qual").innerHTML = contract.Qualifiaction();
+	     document.getElementById("Inst").innerHTML = contract.Institute();
+	     document.getElementById("time").innerHTML = new Date(t.c[0]);
+
+
+	  </script>     
+
+	          
+
+		<footer>
+	      <div class="row">
+	        <div class="col-lg-12">
+	          <p>Copyright &copy; Chinmay Rai 2019</p>
+	        </div>
+	      </div>
+    	</footer>
+
+
+	</body>
+</html>
+
