@@ -18,3 +18,21 @@ bitcoin-cli -named sendrawtransaction hexstring=$signedtx
 
 
 9f9b43c54121ea91aff5033ceff0fafcac2d77ff19e9869177e2ad240df7f6fd
+
+1457460
+
+
+
+url = 'http://api-testnet.coinsecrets.org/block/1457460'
+
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+
+var ret = httpGet(url)
+
+ret.op_returns : list of objects
