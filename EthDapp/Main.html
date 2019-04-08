@@ -29,18 +29,49 @@
 </head>
 
 <body>
-   <div class="container">
 
-		  <div class="panel panel-primary">
+   	<div class="container">
+   		<!-- Navigation -->
+	    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	        <div class="container">
+	            <!-- Brand and toggle get grouped for better mobile display -->
+	            <div class="navbar-header">
+	                <a class="navbar-brand" href="Homepage.html">Home</a>
+	            </div>
+	            <!-- Collect the nav links, forms, and other content for toggling -->
+	            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	                <ul class="nav navbar-nav">
+	                    <li>
+	                        <a onclick="login_certifier()">Certifier</a>
+	                    </li>
+	                    <li>
+	                        <a onclick="login_user()">Certificants</a>
+	                    </li>
+	                    <li>
+	                        <a onclick="login_others()">Third Parties</a>
+	                    </li>
+	                    <li>
+	                        <a href="about.html">About Us</a>
+	                    </li>
+	                </ul>
+	            </div>
+	            <!-- /.navbar-collapse -->
+	        </div>
+	        <!-- /.container -->
+	    </nav>
+
+		<div class="panel panel-primary">
 
 		    <div class="panel-heading"> <h3 style="text-align:center">Register a New Certifiacte </h3></div>
-
 		    <div class="panel-body" >
 
 		      <div class="row">
 		         <h4 align="center">
 	              <span>
 			            Account Address of Recipient <input type="text" name="Recipient_add">
+	              </span>
+	              <span>                    
+	                	Access Password  <input type="text" name="pwd">
 	              </span>
            		 </h4>
 		      </div>
@@ -94,23 +125,27 @@
 
     </div> 
 
-	<script type="text/javascript">
+    <script src="./config"></script>
 
-	    var add = '0x89dfd2a123f421f8463ec81d666d563a956ac439';
+    <script src='build/forge-sha256.min.js'></script>
+
+	<script type="text/javascript">
 
 	    if (typeof web3 !== 'undefined') { web3 = new Web3(web3.currentProvider);}
 	    else {  web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')); }
 		try {web3.eth.accounts;}
 	    catch(err) {alert("You not connected to ethereum");}
 
-	    var abi=[{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"registeredCertificates","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_owner","type":"address"},{"name":"_first_name","type":"string"},{"name":"_last_name","type":"string"},{"name":"_Qualifiaction","type":"string"},{"name":"_Institute","type":"string"},{"name":"_timestamp","type":"uint256"}],"name":"createCert","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"close","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getDeployedCertificates","outputs":[{"name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"Owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"contractAddress","type":"address"}],"name":"ContractCreated","type":"event"}];
-
-	    var abi1 = [{"constant":true,"inputs":[],"name":"issuer","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"close","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"Qualifiaction","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"timestamp","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"first_name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"last_name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"Institute","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_issuer","type":"address"},{"name":"_owner","type":"address"},{"name":"_first_name","type":"string"},{"name":"_last_name","type":"string"},{"name":"_Qualifiaction","type":"string"},{"name":"_Institute","type":"string"},{"name":"_timestamp","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}];
-
-		var contract = web3.eth.contract(abi).at('0xbd957e1891b57876309e3e955c306c196b9f51b7');
+	    var add = Own_add;
+	    var abi = JSON.parse(abi);
+	    var abi1 = JSON.parse(abi1);
+		var contract = web3.eth.contract(abi).at(Cadd);
 
 		function create(){
             var recpnt_add = document.getElementsByName("Recipient_add")[0].value;
+            console.log(recpnt_add);
+            var pwd = "0x"+forge_sha256(document.getElementsByName("pwd")[0].value);
+            console.log(pwd);
             var fst_nm = document.getElementsByName("first_name")[0].value;
             var lst_nm = document.getElementsByName("last_name")[0].value;
             var qual = document.getElementsByName("Qualification")[0].value;
@@ -119,7 +154,7 @@
 
 	        var accpwd = prompt("Enter Ethereum Account Password:","");
 	        if(web3.personal.unlockAccount(add,accpwd,15)==true){
-	            contract.createCert(recpnt_add, fst_nm, lst_nm , qual, inst , Date.now(),txo);
+	        	contract.createCert(recpnt_add,pwd,fst_nm, lst_nm , qual, inst , Date.now(),txo);
 	        } 
         }
 
@@ -129,11 +164,26 @@
 		
 	    for (i = 0; i < list.length; i++) {
 	      var adr = list[i]
-	      var contract = web3.eth.contract(abi).at(adr);
+	      var con = web3.eth.contract(abi1).at(adr);
 	     
-	      x=x+"<li class='list-group-item'><a href='display.html?"+adr+"'>"+adr+"</a></li>";
+	      x=x+"<li class='list-group-item'><a href='display.html?"+adr+"'>"+con.first_name()+" "+con.last_name()+"</a></li>";
 	    }
 	     document.getElementById("cont").innerHTML = x;
+
+	    function login_certifier(){
+            //window.location.href = "login.html" + "?" +"owner";
+            window.open("login.html" + "?" +"certifier", '_blank');
+        }
+
+        function login_user(){
+            //window.location.href = "login.html" + "?" +"user";
+            window.open("login.html" + "?" +"user", '_blank');
+        }
+
+        function login_others(){
+            //window.location.href = "login.html" + "?" +"user";
+            window.open("public.html");
+        }
 
 		
 

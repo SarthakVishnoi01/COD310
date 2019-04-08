@@ -12,7 +12,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-     <script src="js/web3.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src='build/forge-sha256.min.js'></script>
   
     <style>
 	    span:before{
@@ -29,13 +30,46 @@
 <body>
    <div class="container">
 
-		  <div class="panel panel-primary">
+   		<!-- Navigation -->
+	    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	        <div class="container">
+	            <!-- Brand and toggle get grouped for better mobile display -->
+	            <div class="navbar-header">
+	                <a class="navbar-brand" href="Homepage.html">Home</a>
+	            </div>
+	            <!-- Collect the nav links, forms, and other content for toggling -->
+	            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	                <ul class="nav navbar-nav">
+	                    <li>
+	                        <a onclick="login_certifier()">Certifier</a>
+	                    </li>
+	                    <li>
+	                        <a onclick="login_user()">Certificants</a>
+	                    </li>
+	                    <li>
+	                        <a onclick="login_others()">Third Parties</a>
+	                    </li>
+	                    <li>
+	                        <a href="about.html">About Us</a>
+	                    </li>
+	                </ul>
+	            </div>
+	            <!-- /.navbar-collapse -->
+	        </div>
+	        <!-- /.container -->
+    	</nav>
+
+		<div class="panel panel-primary">
 
 		    <div class="panel-heading"> <h3 style="text-align:center">Details of Certificate </h3></div>
 
 		    <div class="panel-body" >
 
 		    	<table class="table">
+		    		<tr>
+		    			<td>Contract Address</td>
+		    			<td><div id="cont_add"></div></td>
+		    		</tr>
 		    		<tr>
 		    			<td>Account Address of Recipient</td>
 		    			<td><div id="Recipient_add"></div></td>
@@ -72,7 +106,10 @@
 		    </div>
 		    
 		  </div> 
-   </div>		   
+   </div>
+
+   <script src='build/forge-sha256.min.js'></script>
+   <script src="./config"></script>		   
 
 	<script type="text/javascript">
 
@@ -83,11 +120,12 @@
 		try {web3.eth.accounts;}
 	    catch(err) {alert("You not connected to ethereum");}
 
-	     var abi1 = [{"constant":true,"inputs":[],"name":"issuer","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"close","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"Qualifiaction","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"timestamp","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"first_name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"last_name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"Institute","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_issuer","type":"address"},{"name":"_owner","type":"address"},{"name":"_first_name","type":"string"},{"name":"_last_name","type":"string"},{"name":"_Qualifiaction","type":"string"},{"name":"_Institute","type":"string"},{"name":"_timestamp","type":"uint256"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}];
+	     var abi1 = JSON.parse(abi1);
 
 	     var contract = web3.eth.contract(abi1).at(add);
 	     var t = contract.timestamp();
 
+	     document.getElementById("cont_add").innerHTML = add;
 	     document.getElementById("Recipient_add").innerHTML = contract.owner();
 	     document.getElementById("Issuer_add").innerHTML = contract.issuer();
 	     document.getElementById("lst_name").innerHTML = contract.first_name();
@@ -95,6 +133,21 @@
 	     document.getElementById("qual").innerHTML = contract.Qualifiaction();
 	     document.getElementById("Inst").innerHTML = contract.Institute();
 	     document.getElementById("time").innerHTML = new Date(t.c[0]);
+
+	    function login_certifier(){
+            //window.location.href = "login.html" + "?" +"owner";
+            window.open("login.html" + "?" +"certifier", '_blank');
+        }
+
+        function login_user(){
+            //window.location.href = "login.html" + "?" +"user";
+            window.open("login.html" + "?" +"user", '_blank');
+        }
+
+        function login_others(){
+            //window.location.href = "login.html" + "?" +"user";
+            window.open("public.html");
+        }
 
 
 	  </script>     

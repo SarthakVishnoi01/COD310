@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/1-col-portfolio.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+     <script src="js/web3.min.js"></script>
+  
+    <style>
+	    span:before{
+	          content:" "; 
+	          display:inline-block; 
+	          width:50px;
+	      	}
+	</style>
+
+    
+
+	<title>Public View</title>
+
+</head>
+
+<body>
+
+	<!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <a class="navbar-brand" href="Homepage.html">Home</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a onclick="login_certifier()">Certifier</a>
+                    </li>
+                    <li>
+                        <a onclick="login_user()">Certificants</a>
+                    </li>
+                    <li>
+                        <a onclick="login_others()">Third Parties</a>
+                    </li>
+                    <li>
+                        <a href="about.html">About Us</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+   	<div class="container">
+	    <div class="row">
+			<div class="panel panel-primary fluid">
+				<div class="panel-heading"> <h3 style="text-align:center">Registered Certificates</h3></div>
+				<div class="panel-body" >
+					<ul class="list-group">       
+				    	<div id=cont></div>         
+				    </ul>
+				</div>
+			</div>
+		</div>
+		<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Confused? </button>	
+		<div class="modal" id="myModal">
+	    	<div class="modal-dialog">
+	      		<div class="modal-content">
+	      
+			        <!-- Modal Header -->
+			        <div class="modal-header">
+			          <h4 class="modal-title">User Home</h4>
+			          <button type="button" class="close" data-dismiss="modal">&times;</button>
+			          	<br>
+			          	<ul class="list-group">
+			          		<li class="list-group-item">You can view Names of all the recepients .</li>
+			          		<li class="list-group-item">You can access a certificate if you have the respective key.</li>
+			          		<li class="list-group-item">If you don't have the respective key then you may want to ask the certificate owner.</li>
+			          	</ul>
+			        </div>
+	        
+	     		 </div>
+	    	</div>
+	 	</div>		
+
+    </div> 
+
+    <script src='build/forge-sha256.min.js'></script>
+    <script src="./config"></script>
+
+	<script type="text/javascript">
+
+	    if (typeof web3 !== 'undefined') { web3 = new Web3(web3.currentProvider);}
+	    else {  web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')); }
+		try {web3.eth.accounts;}
+	    catch(err) {alert("You not connected to ethereum");}
+
+	    var add = Own_add;
+	    var abi = JSON.parse(abi);
+	    var abi1 = JSON.parse(abi1);
+		var contract = web3.eth.contract(abi).at(Cadd);
+
+		var list = contract.getDeployedCertificates();
+
+		var x="";
+		
+	    for (i = 0; i < list.length; i++) {
+	      var adr = list[i];
+	      var con = web3.eth.contract(abi1).at(adr);
+	     
+	      x=x+"<li class='list-group-item'><a onclick='auth("+i+");'>"+con.first_name()+" "+con.last_name()+"</a></li>";
+	    }
+	     document.getElementById("cont").innerHTML = x;
+
+	    function auth(s){
+            var adr = list[s];
+            var con = web3.eth.contract(abi1).at(adr);
+            var pwd = prompt("You can view this certificate only if you it's Key.","Enter Key Here");
+            var p1 = "0x" + forge_sha256(pwd);
+            if(con.authKey(p1)){
+            	window.location.href = "display.html?"+adr;
+            }
+            else{
+            	alert("Incorrect Password. Try Again. If you don't have the key the request a key from the certificate owner.")
+            }
+        }
+
+        function login_certifier(){
+            //window.location.href = "login.html" + "?" +"owner";
+            window.open("login.html" + "?" +"certifier", '_blank');
+        }
+
+        function login_user(){
+            //window.location.href = "login.html" + "?" +"user";
+            window.open("login.html" + "?" +"user", '_blank');
+        }
+
+        function login_others(){
+            //window.location.href = "login.html" + "?" +"user";
+            window.open("public.html");
+        }
+
+	  </script>
+
+		<footer>
+	      <div class="row">
+	        <div class="col-lg-12">
+	          <p>Copyright &copy; Chinmay Rai 2019</p>
+	        </div>
+	      </div>
+    	</footer>
+
+
+	</body>
+</html>
+

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/1-col-portfolio.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+ 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+     <script src="js/web3.min.js"></script>
+  
+    <style>
+	    span:before{
+	          content:" "; 
+	          display:inline-block; 
+	          width:50px;
+	      	}
+	</style>
+
+    
+
+	<title>Certificant</title>
+
+</head>
+
+<body>
+   <div class="container">
+   		<!-- Navigation -->
+	    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	        <div class="container">
+	            <!-- Brand and toggle get grouped for better mobile display -->
+	            <div class="navbar-header">
+	                <a class="navbar-brand" href="Homepage.html">Home</a>
+	            </div>
+	            <!-- Collect the nav links, forms, and other content for toggling -->
+	            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	                <ul class="nav navbar-nav">
+	                    <li>
+	                        <a onclick="login_certifier()">Certifier</a>
+	                    </li>
+	                    <li>
+	                        <a onclick="login_user()">Certificants</a>
+	                    </li>
+	                    <li>
+	                        <a onclick="login_others()">Third Parties</a>
+	                    </li>
+	                    <li>
+	                        <a href="about.html">About Us</a>
+	                    </li>
+	                </ul>
+	            </div>
+	            <!-- /.navbar-collapse -->
+	        </div>
+	        <!-- /.container -->
+	    </nav>
+
+
+	    <div class="row">
+			<div class="panel panel-primary fluid">
+				<div class="panel-heading"> <h3 style="text-align:center">Your Certificate</h3></div>
+				<div class="panel-body" >
+					<ul class="list-group">       
+				    	<div id=cont></div>         
+				    </ul>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="panel panel-primary fluid">
+				<div class="panel-heading"> <h3 style="text-align:center">Accessibility</h3></div>
+				<div class="panel-body" >
+					<ul class="list-group">     
+						<h4 align="center">  
+					    	<span>
+				            	Remove Key <input type="text" name="remkey">
+				            </span>  
+				            <span>
+				            	<button type="button" class="btn btn-primary" onclick="remove();">Remove</button>
+				            </span>       
+						  	<hr>      
+					    	<span>
+				            	Add Key <input type="text" name="addkey">
+				            </span>
+				            <span>
+				            	<button type="button" class="btn btn-primary" onclick="add();">Add</button>
+				            </span>
+				        </h4>
+				    </ul>
+				</div>
+			</div>
+		</div>	
+
+
+		<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Confused? </button>	
+		<div class="modal" id="myModal">
+	    	<div class="modal-dialog">
+	      		<div class="modal-content">
+	      
+			        <!-- Modal Header -->
+			        <div class="modal-header">
+			          <h4 class="modal-title">User Home</h4>
+			          <button type="button" class="close" data-dismiss="modal">&times;</button>
+			          	<br>
+			          	<ul class="list-group">
+			          		<li class="list-group-item">You can view all your certificate.</li>
+			          		<li class="list-group-item">You can add access keys, which will allow others to view your Certificate.</li>
+			          		<li class="list-group-item">You can also remove a particular key if you want.</li>
+			          	</ul>
+			        </div>
+	        
+	     		 </div>
+	    	</div>
+	 	</div>
+
+    </div> 
+
+    <script src='build/forge-sha256.min.js'></script>
+    <script src="./config"></script>
+
+	<script type="text/javascript">
+
+	    if (typeof web3 !== 'undefined') { web3 = new Web3(web3.currentProvider);}
+	    else {  web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545')); }
+		try {web3.eth.accounts;}
+	    catch(err) {alert("You not connected to ethereum");}
+
+	    var token = decodeURIComponent(window.location.search).substring(1);
+
+	    var abi = JSON.parse(abi);
+	    var abi1 = JSON.parse(abi1);
+		var contract = web3.eth.contract(abi).at(Cadd);
+
+        var list = contract.getDeployedCertificates();
+
+		var x="";
+		var cert;
+	    for (i = 0; i < list.length; i++) {
+	      var adr = list[i]
+	      var con = web3.eth.contract(abi1).at(adr);
+	      if(con.owner()==token){
+	      	cert= con;
+	      	x=x+"<li class='list-group-item'><a href='display.html?"+adr+"'>"+con.first_name()+" "+con.last_name()+"</a></li>";
+	      }
+	    }
+	    
+	    document.getElementById("cont").innerHTML = x;
+
+	    function remove(){
+            var rem_key = "0x" +forge_sha256(document.getElementsByName("remkey")[0].value);
+            var txo = {from:token, gasPrice:'20000000000',gas:'1000000'};
+
+	        var accpwd = prompt("Enter Ethereum Account Password:","");
+	        if(web3.personal.unlockAccount(token,accpwd,15)==true){
+	            cert.remKey(rem_key,txo);
+	        } 
+        }
+
+        function add(){
+            var add_key = "0x" + forge_sha256(document.getElementsByName("addkey")[0].value);
+            console.log(add_key);
+            var txo = {from:token, gasPrice:'20000000000',gas:'1000000'};
+
+	        var accpwd = prompt("Enter Ethereum Account Password:","");
+	        if(web3.personal.unlockAccount(token,accpwd,15)==true){
+	            cert.addKey(add_key,txo);
+	        } 
+        }
+
+        function login_certifier(){
+            //window.location.href = "login.html" + "?" +"owner";
+            window.open("login.html" + "?" +"certifier", '_blank');
+        }
+
+        function login_user(){
+            //window.location.href = "login.html" + "?" +"user";
+            window.open("login.html" + "?" +"user", '_blank');
+        }
+
+        function login_others(){
+            //window.location.href = "login.html" + "?" +"user";
+            window.open("public.html");
+        }
+
+		
+
+	  </script>
+
+
+		<footer>
+	      <div class="row">
+	        <div class="col-lg-12">
+	          <p>Copyright &copy; Chinmay Rai 2019</p>
+	        </div>
+	      </div>
+    	</footer>
+
+
+	</body>
+</html>
+
