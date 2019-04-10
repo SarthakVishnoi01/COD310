@@ -119,18 +119,21 @@
             if(token=='certifier'){
                 console.log(token);
                 if((contract.Owner()==add1) && contract.pwd()==pwd){
-                    window.location.href = "Main.html"
+                    window.open("Main.html");
+                    close();
                 }
                 else{
+                    location.reload();
                     alert("Incorrect Username or Password. Try Again");
-                    //location.reload();
+                    location.reload();
                 }
             }
             else if(token=='user'){
                 console.log(contract.userPass(add1));
                 console.log(pwd);
                 if(contract.userPass(add1)==pwd){
-                    window.location.href = "user.html"+"?"+add1
+                    window.open("user.html"+"?"+add1);
+                    close();
                 }
                 else{
                     location.reload();

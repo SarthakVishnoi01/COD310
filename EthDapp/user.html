@@ -159,17 +159,19 @@
 	        if(web3.personal.unlockAccount(token,accpwd,15)==true){
 	            cert.remKey(rem_key,txo);
 	        } 
+	        location.reload();
         }
 
         function add(){
             var add_key = "0x" + forge_sha256(document.getElementsByName("addkey")[0].value);
-            console.log(add_key);
+            
             var txo = {from:token, gasPrice:'20000000000',gas:'1000000'};
 
 	        var accpwd = prompt("Enter Ethereum Account Password:","");
 	        if(web3.personal.unlockAccount(token,accpwd,15)==true){
 	            cert.addKey(add_key,txo);
 	        } 
+	        location.reload();
         }
 
         function login_certifier(){

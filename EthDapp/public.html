@@ -125,7 +125,8 @@
             var pwd = prompt("You can view this certificate only if you it's Key.","Enter Key Here");
             var p1 = "0x" + forge_sha256(pwd);
             if(con.authKey(p1)){
-            	window.location.href = "display.html?"+adr;
+            	window.open("display.html?"+adr);
+            	close();
             }
             else{
             	alert("Incorrect Password. Try Again. If you don't have the key the request a key from the certificate owner.")
