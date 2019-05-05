@@ -1,0 +1,32 @@
+go to /opt/lampp/htdocs/examples/
+type nautilus .
+This will open the folder in GUI
+
+
+run this on terminal "sudo /opt/lampp/manager-linux-x64.run" to get XAMPP terminal
+Start MySQL Database and Apache Web Server and they won't run in first place
+
+For Apache Web Server
+sudo apachectl stop
+
+For MySQL
+sudo service mysql stop
+
+type "localhost/examples/" to run the webpage
+
+"sudo -H nautilus" to get permission to paste in root
+
+sudo chmod -R 777 /opt/lampp/htdocs/examples
+
+
+
+-------------------------------------------------------------------------------------------
+
+
+We store hashes of the files in the blockchain and when we get a file we search the bitcoin blockchain and if that transaction occurs, we return true
+
+Block Number is 1514256
+
+What files to change index.php, certiVerifierMain.php and certiVerifier.php
+
+Authentication, Duplication
