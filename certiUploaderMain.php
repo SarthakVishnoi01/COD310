@@ -10,13 +10,33 @@
       return xmlHttp.responseText.op_returns;
   }
 </script>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <meta charset="utf-8">
+</head>
 </head>
 
 <body>
-  <p>Select The Directory containing the certificates:
-    <input type="file" webkitdirectory mozdirectory />
-  </p>
-  <p>You can select any directory with multiple files or multiple child directories in it.</p>
+  <br>
+  <br>
+  <div class="container">
+    <div class="panel panel-primary">
+      <div class="panel-heading"> <h3 style="text-align:center">Welcome  </h3></div>
+        <div class="panel-body" >
+          <p>Select The Directory containing the certificates:
+            <input type="file" webkitdirectory mozdirectory />
+          </p>
+        <br>
+        <p>You can select any directory with multiple files or multiple child directories in it.</p>
+      </div>
+    </div>
+  </div>  
+
 <?php
   // // Setting paths for various directories
   // $dirpath = realpath(dirname(getcwd()));

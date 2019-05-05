@@ -1,12 +1,12 @@
 bitcoind -deprecatedrpc=signrawtransaction (in a different terminal)
 
 
-op_return_data="49495444444f4353d1c0aab3cb4837b5240c11a4a93a51aa51f9acd171d4465335c72b387f33c594"
+op_return_data="49495444444f435302d65330f044c2bdae734b529af4ad6947cbc8122bfd3980da03968d0286995b"
 
 utxo_txid=$(bitcoin-cli listunspent | jq -r '.[0] | .txid')
 utxo_vout=$(bitcoin-cli listunspent | jq -r '.[0] | .vout')
 changeaddress=$(bitcoin-cli getrawchangeaddress)
-rawtxhex=$(bitcoin-cli -named createrawtransaction inputs='''[ { "txid": "'$utxo_txid'", "vout": '$utxo_vout' } ]''' outputs='''{ "data": "'$op_return_data'", "'$changeaddress'": 0.8995 }''')
+rawtxhex=$(bitcoin-cli -named createrawtransaction inputs='''[ { "txid": "'$utxo_txid'", "vout": '$utxo_vout' } ]''' outputs='''{ "data": "'$op_return_data'", "'$changeaddress'": 0.0095 }''')
 
 bitcoin-cli -named decoderawtransaction hexstring=$rawtxhex 
 
